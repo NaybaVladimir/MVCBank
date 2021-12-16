@@ -7,7 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -17,15 +22,60 @@ public class TransactionService {
     private AccountBankRepo accountBankRepo;
 
 
-    public Map<String, Object> initMainTransaction(Map<String, Object> map, String id) {
-        map.put("allTransaction", transactionRepo.findAllByFromBankAccountModel(accountBankRepo.findAccountBankModelById(Long.parseLong(id))));
-        map.put("idAccountBank", id);
+    public Map<String, Object> initMainTransaction(Map<String, Object> map, String id, String dateFrom, String dateTo) {
+        List<TransactionModel> listTransaction = transactionRepo.findAllByFromBankAccountModel(accountBankRepo.findAccountBankModelById(Long.parseLong(id)));
+        if (!dateFrom.equals("notDate")) {
+            Date from = format(dateFrom);
+            listTransaction = listTransaction.stream().filter(t -> t.getDate().compareTo(from) >= 0).collect(Collectors.toList());
+        }
+        if (!dateTo.equals("notDate")) {
+            Date to = format(dateTo);
+            listTransaction = listTransaction.stream().filter(t -> t.getDate().compareTo(to) <= 0).collect(Collectors.toList());
+        }
+
+
+        map.put("allTransaction", listTransaction);
+        map.put("accountStateBeforeTheTransaction", accountBankRepo.findAccountBankModelById(Long.parseLong(id)).getAmountOfMoney());
+        map.put("idAccountBank",accountBankRepo.findAccountBankModelById(Long.parseLong(id)).getClientBankModel().getId());
         map.put("newTransaction", new TransactionModel());
         return map;
     }
 
-    @Transactional
+
     public void addNewTransaction(TransactionModel transaction) {
-        transactionRepo.save(transaction);
+        long sum = transaction.getFromBankAccountModel().getAmountOfMoney();
+        switch (transaction.getTypeOfOperation()) {
+            case Refill:
+                transaction.getFromBankAccountModel().setAmountOfMoney(sum + transaction.getSum());
+                saveTransaction(transaction);
+                break;
+            case WritingOffMoney:
+                if (sum - transaction.getSum() >= 0)
+                    transaction.getFromBankAccountModel().setAmountOfMoney(sum - transaction.getSum());
+                saveTransaction(transaction);
+                break;
+            case TransfersBetweenAccounts:
+                if (sum - transaction.getSum() >= 0)
+                    transaction.getFromBankAccountModel().setAmountOfMoney(sum - transaction.getSum());
+                saveTransaction(transaction);
+                break;
+        }
+
+    }
+
+    public Date format(String dateString) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    @Transactional
+    public void saveTransaction(TransactionModel transactionModel) {
+        transactionRepo.save(transactionModel);
     }
 }

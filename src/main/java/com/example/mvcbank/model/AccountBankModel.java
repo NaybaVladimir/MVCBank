@@ -14,7 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 public class AccountBankModel implements Comparable<AccountBankModel>, Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -24,7 +24,6 @@ public class AccountBankModel implements Comparable<AccountBankModel>, Cloneable
     private long amountOfMoney;
 
     @OneToMany(mappedBy = "fromBankAccountModel",
-            orphanRemoval = true,
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<TransactionModel> transactions;

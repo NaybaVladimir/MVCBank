@@ -15,18 +15,21 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping("/{id}")
-    public String mainTransaction(@PathVariable("id") String id, Map<String, Object> map) {
-        map = transactionService.initMainTransaction(map, id);
+    public String mainTransaction(@PathVariable("id") String id,
+                                  Map<String, Object> map,
+                                  @RequestParam(value = "from", required = false, defaultValue = "notDate") String dateFrom,
+                                  @RequestParam(value = "to", required = false, defaultValue = "notDate") String dateTo) {
+        map = transactionService.initMainTransaction(map, id, dateFrom, dateTo);
         return "transaction";
     }
 
-    @PostMapping("/{idAccountBank}")
-    public String newTransaction(@PathVariable("idAccountBank") String idAccountBank,
+    @PostMapping("/{id}")
+    public String newTransaction(@PathVariable("id") String idAccountBank,
                                  @ModelAttribute("newTransaction") TransactionModel newTransaction) {
-
         transactionService.addNewTransaction(newTransaction);
-
-        return "redirect:/transaction/{idAccountBank}";
+        return "redirect:/transaction/{id}";
     }
 
 }
+
+

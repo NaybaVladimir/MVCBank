@@ -14,13 +14,12 @@ import java.util.Objects;
 @NoArgsConstructor
 public class ClientBankModel implements Comparable<ClientBankModel>, Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy  = GenerationType.AUTO)
     private Long id;
     private String name;
     private String address;
     private byte age;
     @OneToMany(mappedBy = "clientBankModel",
-            orphanRemoval = true,
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<AccountBankModel> list;

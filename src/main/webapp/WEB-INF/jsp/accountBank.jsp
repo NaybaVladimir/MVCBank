@@ -26,7 +26,7 @@
             <td>${accountBank.amountOfMoney}</td>
             <td>
                 <form action="/transaction/${accountBank.id}">
-                    <button type="submit">Посмотреть историю транзакций</button>
+                    <button type="submit">История | Осуществление транзакции</button>
                 </form>
             </td>
         </tr>
@@ -35,18 +35,11 @@
 </table>
 
 
-<h2>Форма для добавления счета:</h2>
 <form name="newAccountBank" action="/bankAccount/${id}" method="post">
-    <ul>
-        <li>
-            <label>Id Клиента банка(не редактируется)</label> <input type="text" name="clientBankModel" value="${id}"
-                                                                     readonly/>
-        </li>
-        <li>
-            <label>amountOfMoney</label> <input type="number" name="amountOfMoney"/>
-        </li>
-    </ul>
-    <button type="submit">Update</button>
+
+            <input type="hidden" name="clientBankModel" value="${id}" />
+            <input type="hidden" name="amountOfMoney" value="0"/>
+    <button type="submit">Создать новый счет</button>
 </form>
 
 </body>

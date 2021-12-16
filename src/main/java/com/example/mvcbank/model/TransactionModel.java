@@ -16,7 +16,7 @@ import java.util.Objects;
 public class TransactionModel implements Comparable<TransactionModel>, Cloneable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -27,7 +27,8 @@ public class TransactionModel implements Comparable<TransactionModel>, Cloneable
     private AccountBankModel fromBankAccountModel;
 
     private TypeOfOperation typeOfOperation;
-    private int sum;
+    private long sum;
+    private long accountStateBeforeTheTransaction;
 
 
     @Override

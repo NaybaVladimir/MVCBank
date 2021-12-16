@@ -30,21 +30,21 @@
 </table>
 
 
-    <h2>Форма для добавления новго клиента:</h2>
-    <form name="newClient" action="/${id}" method="post">
-        <ul>
-            <li>
-                <label>Name</label> <input type="text" name="name"/>
-            </li>
-            <li>
-                <label>Address</label> <input type="text" name="address"/>
-            </li>
-            <li>
-                <label>Age</label> <input type="number" name="age"/>
-            </li>
-        </ul>
-        <button type="submit">Update</button>
-    </form>
+<h2>Форма для добавления новго клиента:</h2>
+<form name="newClient" action="/${id}" method="post">
+    <ul>
+        <li>
+            <label>Name</label> <input type="text" name="name"/>
+        </li>
+        <li>
+            <label>Address</label> <input type="text" name="address"/>
+        </li>
+        <li>
+            <label>Age</label> <input type="number" name="age"/>
+        </li>
+    </ul>
+    <button type="submit">Update</button>
+</form>
 
 </body>
 </html>
