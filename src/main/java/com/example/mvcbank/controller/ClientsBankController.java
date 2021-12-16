@@ -1,5 +1,6 @@
 package com.example.mvcbank.controller;
 
+import com.example.mvcbank.dto.ClientDTO;
 import com.example.mvcbank.model.ClientBankModel;
 import com.example.mvcbank.service.ClientBankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +12,18 @@ import java.util.Map;
 @Controller
 @RequestMapping()
 public class ClientsBankController {
+
     @Autowired
     private ClientBankService clientBankService;
 
     @GetMapping()
     public String mainClientBank(Map<String, Object> response) {
-        response = clientBankService.mainTemplateInit(response);
+        clientBankService.mainTemplateInit(response);
         return "clientBankMain";
     }
 
     @PostMapping("/")
-    public String newClient(@ModelAttribute("newClient") ClientBankModel newClient) {
+    public String newClient(@ModelAttribute("newClient") ClientDTO newClient) {
         clientBankService.newClient(newClient);
         return "redirect:";
     }

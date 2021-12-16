@@ -3,29 +3,41 @@ package com.example.mvcbank.service;
 import com.example.mvcbank.model.AccountBankModel;
 import com.example.mvcbank.repository.AccountBankRepo;
 import com.example.mvcbank.repository.ClientBankRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class AccountBankService {
-    @Autowired
-    private AccountBankRepo accountBankRepo;
-    @Autowired
-    private ClientBankRepo clientBankRepo;
 
-    public Map<String, Object> mainAccountBank(String id, Map<String, Object> map) {
-        map.put("allAccountBank", accountBankRepo.findAllByClientBankModel(clientBankRepo.findClientBankModelById(Long.parseLong(id))));
-        map.put("newAccountBank",new AccountBankModel());
-        map.put("id",id);
-        return map;
+    private final AccountBankRepo accountBankRepo;
+    private final ClientBankRepo clientBankRepo;
+
+    /**
+     * Получения списка счетов клиента
+     *
+     * @param id  Идентификатор клиента
+     * @param map Ответ для фронта
+     */
+    public void getMainPageAccountBank(String id, Map<String, Object> map) {
+        val listAccountBank = accountBankRepo.findByClientBankModel(
+                clientBankRepo.findClientBankModelById(Long.parseLong(id)));
+
+        map.put("allAccountBank", listAccountBank);
+        map.put("newAccountBank", new AccountBankModel());
+        map.put("id", id);
     }
+
     @Transactional
-    public void addNewAccountBank(AccountBankModel newAccountBank){
+    public void addNewAccountBank(AccountBankModel newAccountBank) {
         accountBankRepo.save(newAccountBank);
+        log.info("Счет для аккаунта: {} добавлен.", newAccountBank.getClientBankModel().getId());
     }
 
 }

@@ -40,7 +40,7 @@
                                                                 value="${accountStateBeforeTheTransaction}" readonly/>
         </li>
         <li>
-            <label>Сумма:</label> <input type="number" name="sum"/>
+            <label>Сумма:</label> <input type="number" name="sum" required/>
         </li>
     </ul>
     <button type="submit">Update</button>

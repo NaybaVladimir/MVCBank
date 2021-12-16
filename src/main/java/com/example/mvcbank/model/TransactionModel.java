@@ -27,7 +27,10 @@ public class TransactionModel implements Comparable<TransactionModel>, Cloneable
     private AccountBankModel fromBankAccountModel;
 
     private TypeOfOperation typeOfOperation;
+
+    @Column(nullable = false)
     private long sum;
+
     private long accountStateBeforeTheTransaction;
 
 

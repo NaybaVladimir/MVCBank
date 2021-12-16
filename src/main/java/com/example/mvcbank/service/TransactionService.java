@@ -3,6 +3,7 @@ package com.example.mvcbank.service;
 import com.example.mvcbank.model.TransactionModel;
 import com.example.mvcbank.repository.AccountBankRepo;
 import com.example.mvcbank.repository.TransactionRepo;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +24,22 @@ public class TransactionService {
 
 
     public Map<String, Object> initMainTransaction(Map<String, Object> map, String id, String dateFrom, String dateTo) {
-        List<TransactionModel> listTransaction = transactionRepo.findAllByFromBankAccountModel(accountBankRepo.findAccountBankModelById(Long.parseLong(id)));
-        if (!dateFrom.equals("notDate")) {
+
+        val client = accountBankRepo.findAccountBankModelById(Long.parseLong(id));
+        var listTransaction = transactionRepo.findAllByFromBankAccountModel(client);
+
+        if (!"notDate".equals(dateFrom)) {
             Date from = format(dateFrom);
-            listTransaction = listTransaction.stream().filter(t -> t.getDate().compareTo(from) >= 0).collect(Collectors.toList());
+            listTransaction = listTransaction.stream()
+                    .filter(t -> t.getDate().compareTo(from) >= 0)
+                    .collect(Collectors.toList());
         }
-        if (!dateTo.equals("notDate")) {
+
+        if (!"notDate".equals(dateTo)) {
             Date to = format(dateTo);
-            listTransaction = listTransaction.stream().filter(t -> t.getDate().compareTo(to) <= 0).collect(Collectors.toList());
+            listTransaction = listTransaction.stream()
+                    .filter(t -> t.getDate().compareTo(to) <= 0)
+                    .collect(Collectors.toList());
         }
 
 
@@ -38,12 +47,15 @@ public class TransactionService {
         map.put("accountStateBeforeTheTransaction", accountBankRepo.findAccountBankModelById(Long.parseLong(id)).getAmountOfMoney());
         map.put("idAccountBank",accountBankRepo.findAccountBankModelById(Long.parseLong(id)).getClientBankModel().getId());
         map.put("newTransaction", new TransactionModel());
+        map.put("tranactions",  accountBankRepo.findAll());
         return map;
     }
 
 
     public void addNewTransaction(TransactionModel transaction) {
+
         long sum = transaction.getFromBankAccountModel().getAmountOfMoney();
+
         switch (transaction.getTypeOfOperation()) {
             case Refill:
                 transaction.getFromBankAccountModel().setAmountOfMoney(sum + transaction.getSum());

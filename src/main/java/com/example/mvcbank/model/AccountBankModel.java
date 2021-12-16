@@ -51,13 +51,4 @@ public class AccountBankModel implements Comparable<AccountBankModel>, Cloneable
         return (AccountBankModel) super.clone();
     }
 
-//    @Override
-//    public String toString() {
-//        return "AccountBankModel{" +
-//                "Id=" + id +
-//                ", clientBankModel=" + clientBankModel +
-//                ", amountOfMoney=" + amountOfMoney +
-//                ", transactions=" + transactions +
-//                '}';
-//    }
 }

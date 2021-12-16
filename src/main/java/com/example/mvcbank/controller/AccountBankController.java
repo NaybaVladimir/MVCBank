@@ -16,7 +16,7 @@ public class AccountBankController {
 
     @GetMapping("/{id}")
     public String getBankAccount(@PathVariable("id") String id, Map<String, Object> map) {
-        accountBankService.mainAccountBank(id, map);
+        accountBankService.getMainPageAccountBank(id, map);
         return "accountBank";
     }
 
