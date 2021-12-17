@@ -34,13 +34,13 @@
 <form name="newClient" action="/${id}" method="post">
     <ul>
         <li>
-            <label>Name</label> <input type="text" name="name"/>
+            <label>Name</label> <input type="text" name="name" required/>
         </li>
         <li>
-            <label>Address</label> <input type="text" name="address"/>
+            <label>Address</label> <input type="text" name="address" required/>
         </li>
         <li>
-            <label>Age</label> <input type="number" name="age"/>
+            <label>Age</label> <input type="number" name="age" required/>
         </li>
     </ul>
     <button type="submit">Update</button>

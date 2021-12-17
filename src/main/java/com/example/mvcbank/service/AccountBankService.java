@@ -20,7 +20,7 @@ public class AccountBankService {
     private final ClientBankRepo clientBankRepo;
 
     /**
-     * Получения списка счетов клиента
+     * Отдает список счетов по ID клиента, пустой объект счета для инициализации в форме, и id клиента
      *
      * @param id  Идентификатор клиента
      * @param map Ответ для фронта
@@ -28,12 +28,15 @@ public class AccountBankService {
     public void getMainPageAccountBank(String id, Map<String, Object> map) {
         val listAccountBank = accountBankRepo.findByClientBankModel(
                 clientBankRepo.findClientBankModelById(Long.parseLong(id)));
-
         map.put("allAccountBank", listAccountBank);
         map.put("newAccountBank", new AccountBankModel());
         map.put("id", id);
     }
 
+    /**
+     * Сохраняет новый счет в БД
+     * @param newAccountBank новый счета
+     */
     @Transactional
     public void addNewAccountBank(AccountBankModel newAccountBank) {
         accountBankRepo.save(newAccountBank);

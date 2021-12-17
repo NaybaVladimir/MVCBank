@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TransactionRepo extends JpaRepository<TransactionModel, Long> {
     List<TransactionModel> findAllByFromBankAccountModel(AccountBankModel accountBankModel);
+
+    TransactionModel findTransactionModelById(Long id);
 }

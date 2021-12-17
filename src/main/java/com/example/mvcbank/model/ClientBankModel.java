@@ -48,14 +48,5 @@ public class ClientBankModel implements Comparable<ClientBankModel>, Cloneable {
         return (ClientBankModel) super.clone();
     }
 
-    @Override
-    public String toString() {
-        return "ClientBankModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", age=" + age +
-                ", list=" + list +
-                '}';
-    }
+
 }

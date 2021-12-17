@@ -1,40 +1,41 @@
 package com.example.mvcbank.service;
 
-import com.example.mvcbank.dto.ClientDTO;
-import com.example.mvcbank.mapper.ClientBankMapper;
 import com.example.mvcbank.model.ClientBankModel;
 import com.example.mvcbank.repository.ClientBankRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClientBankService {
 
     private final ClientBankRepo bankClientRepo;
 
-    private final ClientBankMapper mapper;
+    /**
+     * Иницилизирует ответ для представления
+     * @param map данные для представления
+     */
+    public void mainTemplateInit(Map<String, Object> map) {
+        val allClient = bankClientRepo.findAll();
 
-    public Map<String, Object> mainTemplateInit(Map<String, Object> response) {
-        val qwe = bankClientRepo.findAll();
+        map.put("allClient", allClient);
+        map.put("newClient", new ClientBankModel());
 
-        val werwe = mapper.getClientDTOFromClientBankModel(qwe);
-
-        response.put("allClient", werwe);
-        response.put("newClient", new ClientBankModel());
-        return response;
     }
 
+    /**
+     * Сохраняет нового клиента в БД
+     * @param newClient
+     */
     @Transactional
-    public void newClient(ClientDTO newClient){
+    public void newClient(ClientBankModel newClient) {
+        bankClientRepo.save(newClient);
 
-        val clintModel = mapper.createClientBankModelFromClientDto(newClient);
-
-        bankClientRepo.save(clintModel);
     }
 }

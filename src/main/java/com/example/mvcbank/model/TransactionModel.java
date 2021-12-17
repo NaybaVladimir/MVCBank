@@ -28,10 +28,11 @@ public class TransactionModel implements Comparable<TransactionModel>, Cloneable
 
     private TypeOfOperation typeOfOperation;
 
-    @Column(nullable = false)
     private long sum;
 
     private long accountStateBeforeTheTransaction;
+
+    private String purposeOfPayment;
 
 
     @Override
@@ -57,14 +58,5 @@ public class TransactionModel implements Comparable<TransactionModel>, Cloneable
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", date=" + date +
-                ", fromBankAccountModel=" + fromBankAccountModel +
-                ", typeOfOperation=" + typeOfOperation +
-                ", sum=" + sum +
-                '}';
-    }
+
 }
